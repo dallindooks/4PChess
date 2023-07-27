@@ -1,5 +1,5 @@
 <script setup lang="ts">
-  import chessBoard from './components/chessBoard.vue';
+  import chessBoard from './views/chessBoard.vue';
 </script>
 
 <script lang="ts">
