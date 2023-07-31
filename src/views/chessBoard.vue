@@ -36,7 +36,6 @@ export default {
 
     drag(ev: DragEvent) {
       ev.dataTransfer!.setData('text', (ev.target as HTMLElement).id)
-      console.log(document.getElementById(ev.dataTransfer!.getData('text'))!);
     },
 
     drop(ev: DragEvent) {
@@ -44,6 +43,8 @@ export default {
       var data = ev.dataTransfer!.getData('text');
       const target = (<HTMLElement>ev.target);
       target.appendChild(document.getElementById(data)!);
+      const audio = new Audio("src/assets/audio/mixkit-on-or-off-light-switch-tap-2585.wav");
+      audio.play();
     }
   },
   mounted(): void {
