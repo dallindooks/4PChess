@@ -1,9 +1,53 @@
 <script lang="ts">
+import MyNameClass from '../MyNameClass'
+
 export default {
   data() {
     return {
-      message: 'Hello from MyComponent!'
+      message: 'Hello from MyComponent!',
+      test: new MyNameClass('dallin', 'wright')
     }
+  },
+  methods: {
+    addImageToParent() {
+      const parentElement = document.getElementById('1-3') as HTMLElement
+
+      // Create the image element
+      const imgElement = document.createElement('img')
+
+      // Set the image source URL
+      imgElement.src = 'src/assets/pieces/bishop.png' // Replace this with your actual image URL
+
+      // Set any other image attributes if needed
+      imgElement.height = 40
+      imgElement.draggable = true
+      imgElement.alt = ""
+      imgElement.id = "swag"
+
+      imgElement.addEventListener('dragstart', this.drag);
+
+      // Append the image element as a child to the parent element
+      parentElement.appendChild(imgElement)
+    },
+
+    allowDrop(ev: DragEvent) {
+      ev.preventDefault()
+    },
+
+    drag(ev: DragEvent) {
+      ev.dataTransfer!.setData('text', (ev.target as HTMLElement).id)
+      console.log(document.getElementById(ev.dataTransfer!.getData('text'))!);
+    },
+
+    drop(ev: DragEvent) {
+      ev.preventDefault();
+      var data = ev.dataTransfer!.getData('text');
+      const target = (<HTMLElement>ev.target);
+      target.appendChild(document.getElementById(data)!);
+    }
+  },
+  mounted(): void {
+    this.addImageToParent()
   }
 }
 </script>
@@ -12,178 +56,178 @@ export default {
   <!-- player one  -->
   <div class="player-vertical">
     <div class="row">
-      <div class="invisible-square"></div>
-      <div class="invisible-square"></div>
-      <div class="square white"></div>
-      <div class="square black"></div>
-      <div class="square white"></div>
-      <div class="square black"></div>
-      <div class="square white"></div>
-      <div class="square black"></div>
-      <div class="square white"></div>
-      <div class="square black"></div>
-      <div class="invisible-square"></div>
-      <div class="invisible-square"></div>
+      <div class="invisible-square" id="1-1"></div>
+      <div class="invisible-square" id="1-2"></div>
+      <div class="square white" id="1-3" @drop="drop" @dragover="allowDrop"></div>
+      <div class="square black" id="1-4" @drop="drop" @dragover="allowDrop"></div>
+      <div class="square white" id="1-5" @drop="drop" @dragover="allowDrop"></div>
+      <div class="square black" id="1-6" @drop="drop" @dragover="allowDrop"></div>
+      <div class="square white" id="1-7" @drop="drop" @dragover="allowDrop"></div>
+      <div class="square black" id="1-8" @drop="drop" @dragover="allowDrop"></div>
+      <div class="square white" id="1-9" @drop="drop" @dragover="allowDrop"></div>
+      <div class="square black" id="1-10" @drop="drop" @dragover="allowDrop"></div>
+      <div class="invisible-square" id="1-11"></div>
+      <div class="invisible-square" id="1-12"></div>
     </div>
     <div class="row">
-      <div class="invisible-square"></div>
-      <div class="invisible-square"></div>
-      <div class="square black"></div>
-      <div class="square white"></div>
-      <div class="square black"></div>
-      <div class="square white"></div>
-      <div class="square black"></div>
-      <div class="square white"></div>
-      <div class="square black"></div>
-      <div class="square white"></div>
-      <div class="invisible-square"></div>
-      <div class="invisible-square"></div>
+      <div class="invisible-square" id="2-1"></div>
+      <div class="invisible-square" id="2-2"></div>
+      <div class="square black" id="2-3" @drop="drop" @dragover="allowDrop"></div>
+      <div class="square white" id="2-4" @drop="drop" @dragover="allowDrop"></div>
+      <div class="square black" id="2-5" @drop="drop" @dragover="allowDrop"></div>
+      <div class="square white" id="2-6" @drop="drop" @dragover="allowDrop"></div>
+      <div class="square black" id="2-7" @drop="drop" @dragover="allowDrop"></div>
+      <div class="square white" id="2-8" @drop="drop" @dragover="allowDrop"></div>
+      <div class="square black" id="2-9" @drop="drop" @dragover="allowDrop"></div>
+      <div class="square white" id="2-10" @drop="drop" @dragover="allowDrop"></div>
+      <div class="invisible-square" id="2-11"></div>
+      <div class="invisible-square" id="2-12"></div>
     </div>
   </div>
   <!-- standard board -->
   <div class="chessboard-standard">
     <div class="row">
-      <div class="square white"></div>
-      <div class="square black"></div>
-      <div class="square white"></div>
-      <div class="square black"></div>
-      <div class="square white"></div>
-      <div class="square black"></div>
-      <div class="square white"></div>
-      <div class="square black"></div>
-      <div class="square white"></div>
-      <div class="square black"></div>
-      <div class="square white"></div>
-      <div class="square black"></div>
+      <div class="square white" id="3-1" @drop="drop" @dragover="allowDrop"></div>
+      <div class="square black" id="3-2" @drop="drop" @dragover="allowDrop"></div>
+      <div class="square white" id="3-3" @drop="drop" @dragover="allowDrop"></div>
+      <div class="square black" id="3-4" @drop="drop" @dragover="allowDrop"></div>
+      <div class="square white" id="3-5" @drop="drop" @dragover="allowDrop"></div>
+      <div class="square black" id="3-6" @drop="drop" @dragover="allowDrop"></div>
+      <div class="square white" id="3-7" @drop="drop" @dragover="allowDrop"></div>
+      <div class="square black" id="3-8" @drop="drop" @dragover="allowDrop"></div>
+      <div class="square white" id="3-9" @drop="drop" @dragover="allowDrop"></div>
+      <div class="square black" id="3-10" @drop="drop" @dragover="allowDrop"></div>
+      <div class="square white" id="3-11" @drop="drop" @dragover="allowDrop"></div>
+      <div class="square black" id="3-12" @drop="drop" @dragover="allowDrop"></div>
     </div>
     <div class="row">
-      <div class="square black"></div>
-      <div class="square white"></div>
-      <div class="square black"></div>
-      <div class="square white"></div>
-      <div class="square black"></div>
-      <div class="square white"></div>
-      <div class="square black"></div>
-      <div class="square white"></div>
-      <div class="square black"></div>
-      <div class="square white"></div>
-      <div class="square black"></div>
-      <div class="square white"></div>
+      <div class="square black" id="4-1" @drop="drop" @dragover="allowDrop"></div>
+      <div class="square white" id="4-2" @drop="drop" @dragover="allowDrop"></div>
+      <div class="square black" id="4-3" @drop="drop" @dragover="allowDrop"></div>
+      <div class="square white" id="4-4" @drop="drop" @dragover="allowDrop"></div>
+      <div class="square black" id="4-5" @drop="drop" @dragover="allowDrop"></div>
+      <div class="square white" id="4-6" @drop="drop" @dragover="allowDrop"></div>
+      <div class="square black" id="4-7" @drop="drop" @dragover="allowDrop"></div>
+      <div class="square white" id="4-8" @drop="drop" @dragover="allowDrop"></div>
+      <div class="square black" id="4-9" @drop="drop" @dragover="allowDrop"></div>
+      <div class="square white" id="4-10" @drop="drop" @dragover="allowDrop"></div>
+      <div class="square black" id="4-11" @drop="drop" @dragover="allowDrop"></div>
+      <div class="square white" id="4-12" @drop="drop" @dragover="allowDrop"></div>
     </div>
     <div class="row">
-      <div class="square white"></div>
-      <div class="square black"></div>
-      <div class="square white"></div>
-      <div class="square black"></div>
-      <div class="square white"></div>
-      <div class="square black"></div>
-      <div class="square white"></div>
-      <div class="square black"></div>
-      <div class="square white"></div>
-      <div class="square black"></div>
-      <div class="square white"></div>
-      <div class="square black"></div>
+      <div class="square white" id="5-1" @drop="drop" @dragover="allowDrop"></div>
+      <div class="square black" id="5-2" @drop="drop" @dragover="allowDrop"></div>
+      <div class="square white" id="5-3" @drop="drop" @dragover="allowDrop"></div>
+      <div class="square black" id="5-4" @drop="drop" @dragover="allowDrop"></div>
+      <div class="square white" id="5-5" @drop="drop" @dragover="allowDrop"></div>
+      <div class="square black" id="5-6" @drop="drop" @dragover="allowDrop"></div>
+      <div class="square white" id="5-7" @drop="drop" @dragover="allowDrop"></div>
+      <div class="square black" id="5-8" @drop="drop" @dragover="allowDrop"></div>
+      <div class="square white" id="5-9" @drop="drop" @dragover="allowDrop"></div>
+      <div class="square black" id="5-10" @drop="drop" @dragover="allowDrop"></div>
+      <div class="square white" id="5-11" @drop="drop" @dragover="allowDrop"></div>
+      <div class="square black" id="5-12" @drop="drop" @dragover="allowDrop"></div>
     </div>
     <div class="row">
-      <div class="square black"></div>
-      <div class="square white"></div>
-      <div class="square black"></div>
-      <div class="square white"></div>
-      <div class="square black"></div>
-      <div class="square white"></div>
-      <div class="square black"></div>
-      <div class="square white"></div>
-      <div class="square black"></div>
-      <div class="square white"></div>
-      <div class="square black"></div>
-      <div class="square white"></div>
+      <div class="square black" id="6-1" @drop="drop" @dragover="allowDrop"></div>
+      <div class="square white" id="6-2" @drop="drop" @dragover="allowDrop"></div>
+      <div class="square black" id="6-3" @drop="drop" @dragover="allowDrop"></div>
+      <div class="square white" id="6-4" @drop="drop" @dragover="allowDrop"></div>
+      <div class="square black" id="6-5" @drop="drop" @dragover="allowDrop"></div>
+      <div class="square white" id="6-6" @drop="drop" @dragover="allowDrop"></div>
+      <div class="square black" id="6-7" @drop="drop" @dragover="allowDrop"></div>
+      <div class="square white" id="6-8" @drop="drop" @dragover="allowDrop"></div>
+      <div class="square black" id="6-9" @drop="drop" @dragover="allowDrop"></div>
+      <div class="square white" id="6-10" @drop="drop" @dragover="allowDrop"></div>
+      <div class="square black" id="6-11" @drop="drop" @dragover="allowDrop"></div>
+      <div class="square white" id="6-12" @drop="drop" @dragover="allowDrop"></div>
     </div>
     <div class="row">
-      <div class="square white"></div>
-      <div class="square black"></div>
-      <div class="square white"></div>
-      <div class="square black"></div>
-      <div class="square white"></div>
-      <div class="square black"></div>
-      <div class="square white"></div>
-      <div class="square black"></div>
-      <div class="square white"></div>
-      <div class="square black"></div>
-      <div class="square white"></div>
-      <div class="square black"></div>
+      <div class="square white" id="7-1" @drop="drop" @dragover="allowDrop"></div>
+      <div class="square black" id="7-2" @drop="drop" @dragover="allowDrop"></div>
+      <div class="square white" id="7-3" @drop="drop" @dragover="allowDrop"></div>
+      <div class="square black" id="7-4" @drop="drop" @dragover="allowDrop"></div>
+      <div class="square white" id="7-5" @drop="drop" @dragover="allowDrop"></div>
+      <div class="square black" id="7-6" @drop="drop" @dragover="allowDrop"></div>
+      <div class="square white" id="7-7" @drop="drop" @dragover="allowDrop"></div>
+      <div class="square black" id="7-8" @drop="drop" @dragover="allowDrop"></div>
+      <div class="square white" id="7-9" @drop="drop" @dragover="allowDrop"></div>
+      <div class="square black" id="7-10" @drop="drop" @dragover="allowDrop"></div>
+      <div class="square white" id="7-11" @drop="drop" @dragover="allowDrop"></div>
+      <div class="square black" id="7-12" @drop="drop" @dragover="allowDrop"></div>
     </div>
     <div class="row">
-      <div class="square black"></div>
-      <div class="square white"></div>
-      <div class="square black"></div>
-      <div class="square white"></div>
-      <div class="square black"></div>
-      <div class="square white"></div>
-      <div class="square black"></div>
-      <div class="square white"></div>
-      <div class="square black"></div>
-      <div class="square white"></div>
-      <div class="square black"></div>
-      <div class="square white"></div>
+      <div class="square black" id="8-1" @drop="drop" @dragover="allowDrop"></div>
+      <div class="square white" id="8-2" @drop="drop" @dragover="allowDrop"></div>
+      <div class="square black" id="8-3" @drop="drop" @dragover="allowDrop"></div>
+      <div class="square white" id="8-4" @drop="drop" @dragover="allowDrop"></div>
+      <div class="square black" id="8-5" @drop="drop" @dragover="allowDrop"></div>
+      <div class="square white" id="8-6" @drop="drop" @dragover="allowDrop"></div>
+      <div class="square black" id="8-7" @drop="drop" @dragover="allowDrop"></div>
+      <div class="square white" id="8-8" @drop="drop" @dragover="allowDrop"></div>
+      <div class="square black" id="8-9" @drop="drop" @dragover="allowDrop"></div>
+      <div class="square white" id="8-10" @drop="drop" @dragover="allowDrop"></div>
+      <div class="square black" id="8-11" @drop="drop" @dragover="allowDrop"></div>
+      <div class="square white" id="8-12" @drop="drop" @dragover="allowDrop"></div>
     </div>
     <div class="row">
-      <div class="square white"></div>
-      <div class="square black"></div>
-      <div class="square white"></div>
-      <div class="square black"></div>
-      <div class="square white"></div>
-      <div class="square black"></div>
-      <div class="square white"></div>
-      <div class="square black"></div>
-      <div class="square white"></div>
-      <div class="square black"></div>
-      <div class="square white"></div>
-      <div class="square black"></div>
+      <div class="square white" id="9-1" @drop="drop" @dragover="allowDrop"></div>
+      <div class="square black" id="9-2" @drop="drop" @dragover="allowDrop"></div>
+      <div class="square white" id="9-3" @drop="drop" @dragover="allowDrop"></div>
+      <div class="square black" id="9-4" @drop="drop" @dragover="allowDrop"></div>
+      <div class="square white" id="9-5" @drop="drop" @dragover="allowDrop"></div>
+      <div class="square black" id="9-6" @drop="drop" @dragover="allowDrop"></div>
+      <div class="square white" id="9-7" @drop="drop" @dragover="allowDrop"></div>
+      <div class="square black" id="9-8" @drop="drop" @dragover="allowDrop"></div>
+      <div class="square white" id="9-9" @drop="drop" @dragover="allowDrop"></div>
+      <div class="square black" id="9-10" @drop="drop" @dragover="allowDrop"></div>
+      <div class="square white" id="9-11" @drop="drop" @dragover="allowDrop"></div>
+      <div class="square black" id="9-12" @drop="drop" @dragover="allowDrop"></div>
     </div>
     <div class="row">
-      <div class="square black"></div>
-      <div class="square white"></div>
-      <div class="square black"></div>
-      <div class="square white"></div>
-      <div class="square black"></div>
-      <div class="square white"></div>
-      <div class="square black"></div>
-      <div class="square white"></div>
-      <div class="square black"></div>
-      <div class="square white"></div>
-      <div class="square black"></div>
-      <div class="square white"></div>
+      <div class="square black" id="10-1" @drop="drop" @dragover="allowDrop"></div>
+      <div class="square white" id="10-2" @drop="drop" @dragover="allowDrop"></div>
+      <div class="square black" id="10-3" @drop="drop" @dragover="allowDrop"></div>
+      <div class="square white" id="10-4" @drop="drop" @dragover="allowDrop"></div>
+      <div class="square black" id="10-5" @drop="drop" @dragover="allowDrop"></div>
+      <div class="square white" id="10-6" @drop="drop" @dragover="allowDrop"></div>
+      <div class="square black" id="10-7" @drop="drop" @dragover="allowDrop"></div>
+      <div class="square white" id="10-8" @drop="drop" @dragover="allowDrop"></div>
+      <div class="square black" id="10-9" @drop="drop" @dragover="allowDrop"></div>
+      <div class="square white" id="10-10" @drop="drop" @dragover="allowDrop"></div>
+      <div class="square black" id="10-11" @drop="drop" @dragover="allowDrop"></div>
+      <div class="square white" id="10-12" @drop="drop" @dragover="allowDrop"></div>
     </div>
   </div>
   <!-- player three  -->
   <div class="player-vertical">
     <div class="row">
-      <div class="invisible-square"></div>
-      <div class="invisible-square"></div>
-      <div class="square white"></div>
-      <div class="square black"></div>
-      <div class="square white"></div>
-      <div class="square black"></div>
-      <div class="square white"></div>
-      <div class="square black"></div>
-      <div class="square white"></div>
-      <div class="square black"></div>
-      <div class="invisible-square"></div>
-      <div class="invisible-square"></div>
+      <div class="invisible-square" id="11-1"></div>
+      <div class="invisible-square" id="11-2"></div>
+      <div class="square white" id="11-3" @drop="drop" @dragover="allowDrop"></div>
+      <div class="square black" id="11-4" @drop="drop" @dragover="allowDrop"></div>
+      <div class="square white" id="11-5" @drop="drop" @dragover="allowDrop"></div>
+      <div class="square black" id="11-6" @drop="drop" @dragover="allowDrop"></div>
+      <div class="square white" id="11-7" @drop="drop" @dragover="allowDrop"></div>
+      <div class="square black" id="11-8" @drop="drop" @dragover="allowDrop"></div>
+      <div class="square white" id="11-9" @drop="drop" @dragover="allowDrop"></div>
+      <div class="square black" id="11-10" @drop="drop" @dragover="allowDrop"></div>
+      <div class="invisible-square" id="11-11"></div>
+      <div class="invisible-square" id="11-12"></div>
     </div>
     <div class="row">
-      <div class="invisible-square"></div>
-      <div class="invisible-square"></div>
-      <div class="square black"></div>
-      <div class="square white"></div>
-      <div class="square black"></div>
-      <div class="square white"></div>
-      <div class="square black"></div>
-      <div class="square white"></div>
-      <div class="square black"></div>
-      <div class="square white"></div>
-      <div class="invisible-square"></div>
-      <div class="invisible-square"></div>
+      <div class="invisible-square" id="12-1"></div>
+      <div class="invisible-square" id="12-2"></div>
+      <div class="square black" id="12-3" @drop="drop" @dragover="allowDrop"></div>
+      <div class="square white" id="12-4" @drop="drop" @dragover="allowDrop"></div>
+      <div class="square black" id="12-5" @drop="drop" @dragover="allowDrop"></div>
+      <div class="square white" id="12-6" @drop="drop" @dragover="allowDrop"></div>
+      <div class="square black" id="12-7" @drop="drop" @dragover="allowDrop"></div>
+      <div class="square white" id="12-8" @drop="drop" @dragover="allowDrop"></div>
+      <div class="square black" id="12-9" @drop="drop" @dragover="allowDrop"></div>
+      <div class="square white" id="12-10" @drop="drop" @dragover="allowDrop"></div>
+      <div class="invisible-square" id="12-11"></div>
+      <div class="invisible-square" id="12-12"></div>
     </div>
   </div>
 </template>
@@ -209,6 +253,9 @@ body {
 .square {
   width: 50px;
   height: 50px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
 }
 
 .invisible-square {
