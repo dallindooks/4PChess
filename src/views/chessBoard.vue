@@ -1,5 +1,69 @@
 <script lang="ts">
+import Bishop from '@/Model/Bishop'
+import ChessPiece from '@/Model/ChessPiece'
 import MyNameClass from '../MyNameClass'
+import Pawn from '@/Model/Pawn'
+import db from '../firebase/init'
+import { ref, get, onValue } from 'firebase/database'
+import { connectFirestoreEmulator } from 'firebase/firestore'
+import ChessService from '../services/ChessService'
+
+let testPiece: ChessPiece
+
+const player1 = ref(db, 'Player1')
+
+async function retrieveData() {
+  const dbRef = ref(db, 'Player1')
+  get(dbRef)
+    .then((snapshot) => {
+      const data: ChessPiece[] = snapshot.val().pieces
+      if (!data) return
+      const chessPieces: ChessPiece[] = data
+        .map((pieceData) => ChessService.createChessPieceInstance(pieceData))
+        .filter((piece) => piece !== null) as ChessPiece[]
+        chessPieces.forEach((piece) => addImageToSquare(piece))
+    })
+    .catch((error) => {
+      console.error('Error fetching data:', error)
+    })
+}
+
+function addImageToSquare(chessPiece: ChessPiece) {
+  console.log(chessPiece)
+  const location = `${chessPiece.row}-${chessPiece.column}`
+
+  const parentElement = document.getElementById(location) as HTMLElement
+
+  const imgElement = document.createElement('img')
+
+  imgElement.src = chessPiece.imgUrl
+
+  imgElement.height = 40
+  imgElement.draggable = true
+  imgElement.alt = ''
+  imgElement.id = `${chessPiece.id}-player:${chessPiece.playerNumber}`
+
+  imgElement.addEventListener('dragstart', drag)
+
+  parentElement.appendChild(imgElement)
+}
+
+function allowDrop(ev: DragEvent) {
+  ev.preventDefault()
+}
+
+function drag(ev: DragEvent) {
+  ev.dataTransfer!.setData('text', (ev.target as HTMLElement).id)
+}
+
+function drop(ev: DragEvent) {
+  ev.preventDefault()
+  var data = ev.dataTransfer!.getData('text')
+  const target = <HTMLElement>ev.target
+  target.appendChild(document.getElementById(data)!)
+  const audio = new Audio('src/assets/audio/mixkit-on-or-off-light-switch-tap-2585.wav')
+  audio.play()
+}
 
 export default {
   data() {
@@ -9,46 +73,12 @@ export default {
     }
   },
   methods: {
-    addImageToParent() {
-      const parentElement = document.getElementById('1-3') as HTMLElement
-
-      // Create the image element
-      const imgElement = document.createElement('img')
-
-      // Set the image source URL
-      imgElement.src = 'src/assets/pieces/bishop.png' // Replace this with your actual image URL
-
-      // Set any other image attributes if needed
-      imgElement.height = 40
-      imgElement.draggable = true
-      imgElement.alt = ""
-      imgElement.id = "swag"
-
-      imgElement.addEventListener('dragstart', this.drag);
-
-      // Append the image element as a child to the parent element
-      parentElement.appendChild(imgElement)
-    },
-
-    allowDrop(ev: DragEvent) {
-      ev.preventDefault()
-    },
-
-    drag(ev: DragEvent) {
-      ev.dataTransfer!.setData('text', (ev.target as HTMLElement).id)
-    },
-
-    drop(ev: DragEvent) {
-      ev.preventDefault();
-      var data = ev.dataTransfer!.getData('text');
-      const target = (<HTMLElement>ev.target);
-      target.appendChild(document.getElementById(data)!);
-      const audio = new Audio("src/assets/audio/mixkit-on-or-off-light-switch-tap-2585.wav");
-      audio.play();
-    }
+    allowDrop,
+    drop,
+    drag
   },
   mounted(): void {
-    this.addImageToParent()
+    retrieveData()
   }
 }
 </script>
