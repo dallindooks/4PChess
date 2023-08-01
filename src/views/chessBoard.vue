@@ -4,7 +4,7 @@ import ChessPiece from '@/Model/ChessPiece'
 import MyNameClass from '../MyNameClass'
 import Pawn from '@/Model/Pawn'
 import db from '../firebase/init'
-import { ref, get, onValue } from 'firebase/database'
+import { ref, get, onValue, update } from 'firebase/database'
 import { connectFirestoreEmulator } from 'firebase/firestore'
 import ChessService from '../services/ChessService'
 
@@ -31,18 +31,14 @@ async function retrieveData() {
 function addImageToSquare(chessPiece: ChessPiece) {
   console.log(chessPiece)
   const location = `${chessPiece.row}-${chessPiece.column}`
-
   const parentElement = document.getElementById(location) as HTMLElement
-
   const imgElement = document.createElement('img')
 
   imgElement.src = chessPiece.imgUrl
-
   imgElement.height = 40
   imgElement.draggable = true
   imgElement.alt = ''
-  imgElement.id = `${chessPiece.id}-player:${chessPiece.playerNumber}`
-
+  imgElement.id = `${chessPiece.id}-player${chessPiece.playerNumber}`
   imgElement.addEventListener('dragstart', drag)
 
   parentElement.appendChild(imgElement)
@@ -63,6 +59,9 @@ function drop(ev: DragEvent) {
   target.appendChild(document.getElementById(data)!)
   const audio = new Audio('src/assets/audio/mixkit-on-or-off-light-switch-tap-2585.wav')
   audio.play()
+  const chessPieceInfo = ChessService.getChessPieceIdFromId(data);
+  const rowAndCol = ChessService.getRowAndColFromString(target.id);
+  ChessService.updatePiecePosition(chessPieceInfo[0], chessPieceInfo[1], rowAndCol[0], rowAndCol[1])
 }
 
 export default {
