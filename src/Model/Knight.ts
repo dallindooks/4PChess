@@ -6,4 +6,8 @@ export default class Knight extends ChessPiece{
         super(id, name, row, column, inPlay, imgUrl, playerNumber);
       }
 
+      canJump(row: number, col: number) {
+
+      }
+
 }

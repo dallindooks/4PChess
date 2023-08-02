@@ -4,6 +4,7 @@ import db from '../firebase/init'
 import ChessPiece from '@/Model/ChessPiece'
 import Pawn from '@/Model/Pawn'
 import chessBoardVue from '@/views/chessBoard.vue'
+import ChessUtilities from './ChessUtilities'
 
 // function updatePiecePosition(row: number, column: number, player: number, pieceId: number) {
 //     const playerNumber: string = `Player${player}`;
@@ -38,7 +39,7 @@ onValue(pieceDbRef, (snapshot) => {
   console.log('Piece data changed:', pieceDataArray)
   pieceDataArray.forEach((piece) => {
     // console.log(piece)
-    const pieceMap = createChessPieceInstance(piece);
+    const pieceMap = ChessUtilities.createChessPieceInstance(piece);
     chessBoardVue.movePiece(pieceMap!.id, pieceMap!.row, pieceMap!.column);
   })
 })
@@ -50,7 +51,7 @@ async function retrieveData() {
       const data: ChessPiece[] = snapshot.val().pieces
       if (!data) return
       const chessPieces: ChessPiece[] = data
-        .map((pieceData) => createChessPieceInstance(pieceData))
+        .map((pieceData) => ChessUtilities.createChessPieceInstance(pieceData))
         .filter((piece) => piece !== null) as ChessPiece[]
       chessPieces.forEach((piece) => {
         chessBoardVue.addImageToSquare(piece)
@@ -73,35 +74,6 @@ function getChessPieceIdFromId(inputString: string): [number, string] {
     return [parseInt(firstNumber), player]
   }
   return [-1, '']
-}
-
-function createChessPieceInstance(pieceData: any): ChessPiece | null {
-  if (!pieceData || !pieceData.name) return null
-
-  switch (pieceData.name) {
-    case 'pawn':
-      return new Pawn(
-        pieceData.id,
-        pieceData.name,
-        pieceData.row,
-        pieceData.column,
-        pieceData.inPlay,
-        pieceData.imgUrl,
-        pieceData.playerNumber,
-        pieceData.isQueen
-      )
-    // Add other cases for other subclasses if needed
-    default:
-      return new ChessPiece(
-        pieceData.id,
-        pieceData.name,
-        pieceData.row,
-        pieceData.column,
-        pieceData.inPlay,
-        pieceData.imgUrl,
-        pieceData.playerNumber
-      )
-  }
 }
 
 function updatePiecePosition(id: number, player: string, newRow: number, newColumn: number) {
@@ -130,7 +102,6 @@ function getRowAndColFromString(inputString: string): [number, number] {
 }
 
 export default {
-  createChessPieceInstance,
   getChessPieceIdFromId,
   updatePiecePosition,
   getRowAndColFromString,
