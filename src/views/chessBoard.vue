@@ -8,28 +8,20 @@ import { ref, get, onValue, update } from 'firebase/database'
 import { connectFirestoreEmulator } from 'firebase/firestore'
 import ChessService from '../services/ChessService'
 
-let testPiece: ChessPiece
+let initialized: boolean = false;
 
-const player1 = ref(db, 'Player1')
+function movePiece(pieceId: number, newRow: number, newColumn: number) {
+    const currImage = document.getElementById(`${pieceId}-player1`);
+    if (!currImage) return;
+    const currParent = currImage?.parentNode;
+    const newParent = document.getElementById(`${newRow}-${newColumn}`)
+    currParent?.removeChild(currParent.querySelector('img')!)
+    newParent?.appendChild(currImage!)
+    // console.log(`${pieceId}-player1`)
 
-async function retrieveData() {
-  const dbRef = ref(db, 'Player1')
-  get(dbRef)
-    .then((snapshot) => {
-      const data: ChessPiece[] = snapshot.val().pieces
-      if (!data) return
-      const chessPieces: ChessPiece[] = data
-        .map((pieceData) => ChessService.createChessPieceInstance(pieceData))
-        .filter((piece) => piece !== null) as ChessPiece[]
-        chessPieces.forEach((piece) => addImageToSquare(piece))
-    })
-    .catch((error) => {
-      console.error('Error fetching data:', error)
-    })
 }
 
 function addImageToSquare(chessPiece: ChessPiece) {
-  console.log(chessPiece)
   const location = `${chessPiece.row}-${chessPiece.column}`
   const parentElement = document.getElementById(location) as HTMLElement
   const imgElement = document.createElement('img')
@@ -53,7 +45,8 @@ function drag(ev: DragEvent) {
 }
 
 function drop(ev: DragEvent) {
-  ev.preventDefault()
+  ev.preventDefault();
+  if (!initialized) return;
   var data = ev.dataTransfer!.getData('text')
   const target = <HTMLElement>ev.target
   target.appendChild(document.getElementById(data)!)
@@ -65,20 +58,19 @@ function drop(ev: DragEvent) {
 }
 
 export default {
-  data() {
-    return {
-      message: 'Hello from MyComponent!',
-      test: new MyNameClass('dallin', 'wright')
-    }
-  },
   methods: {
     allowDrop,
     drop,
     drag
   },
   mounted(): void {
-    retrieveData()
-  }
+    ChessService.retrieveData()
+  },
+  created() {
+      initialized = true;
+  },
+  addImageToSquare,
+  movePiece
 }
 </script>
 
